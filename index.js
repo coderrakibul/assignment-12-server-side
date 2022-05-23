@@ -17,6 +17,7 @@ async function run() {
     try {
         await client.connect();
         const partCollection = client.db('parts_db').collection('parts');
+        const reviewCollection = client.db('parts_db').collection('reviews');
 
 
         app.get('/part', async (req, res) => {
@@ -26,6 +27,11 @@ async function run() {
             res.send(parts);
         });
 
+        app.post('/review', async (req, res) => {
+            const newReview = req.body;
+            const result = await reviewCollection.insertOne(newReview);
+            res.send(result);
+        });
 
 
     }
