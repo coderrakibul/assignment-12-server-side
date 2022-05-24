@@ -27,6 +27,14 @@ async function run() {
             res.send(parts);
         });
 
+        app.get('/review', async(req, res) =>{
+            const query = {};
+            const cursor = reviewCollection.find(query);
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+
+        });
+
         app.post('/review', async (req, res) => {
             const newReview = req.body;
             const result = await reviewCollection.insertOne(newReview);
