@@ -18,6 +18,7 @@ async function run() {
         await client.connect();
         const partCollection = client.db('parts_db').collection('parts');
         const reviewCollection = client.db('parts_db').collection('reviews');
+        const userCollection = client.db('parts_db').collection('users');
 
 
         app.get('/part', async (req, res) => {
@@ -27,7 +28,7 @@ async function run() {
             res.send(parts);
         });
 
-        app.get('/review', async(req, res) =>{
+        app.get('/review', async (req, res) => {
             const query = {};
             const cursor = reviewCollection.find(query);
             const reviews = await cursor.toArray();
@@ -41,6 +42,17 @@ async function run() {
             res.send(result);
         });
 
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: user,
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
 
     }
 
