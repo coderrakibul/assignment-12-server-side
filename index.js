@@ -28,7 +28,7 @@ async function run() {
             const parts = await cursor.toArray();
             res.send(parts);
         });
-        
+
 
         app.get('/part/:id', async (req, res) => {
             const id = req.params.id;
@@ -85,6 +85,12 @@ async function run() {
             const result = await userCollection.updateOne(filter, updateDoc, options);
             const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30d' })
             res.send({ result, token });
+        });
+
+        app.post('/part', async (req, res) => {
+            const newProduct = req.body;
+            const result = await partCollection.insertOne(newProduct);
+            res.send(result);
         });
 
     }
