@@ -20,6 +20,7 @@ async function run() {
         const partCollection = client.db('parts_db').collection('parts');
         const reviewCollection = client.db('parts_db').collection('reviews');
         const userCollection = client.db('parts_db').collection('users');
+        const orderCollection = client.db('parts_db').collection('orders');
 
 
         app.get('/part', async (req, res) => {
@@ -90,6 +91,12 @@ async function run() {
         app.post('/part', async (req, res) => {
             const newProduct = req.body;
             const result = await partCollection.insertOne(newProduct);
+            res.send(result);
+        });
+
+        app.post('/order', async (req, res) => {
+            const order = req.body;
+            const result = await orderCollection.insertOne(order);
             res.send(result);
         });
 
